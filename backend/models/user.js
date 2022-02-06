@@ -15,37 +15,75 @@ const userSchema = new mongoose.Schema(
             required: true,
             unique: true
         },
+        mobile_no: {
+            type: Number,
+            required: true,
+            min: 10,
+            unique: true
+        },
         hashed_password: {
             type: String,
             required: true
         },
         salt: String,
-        role: {
+        dateofbirth: {
+            type: String,
+            default: ""
+        },
+        Profilepic: {
+            type: String,
+            default: ""
+        },
+        address_1: {
+            type: String,
+            default: ""
+        },
+        address_2: {
+            type: String,
+            default: ""
+        },
+        address_3: {
+            type: String,
+            default: ""
+        },
+        pincode: {
             type: Number,
-            default: 0
+            default: null
+        },
+        cart: {
+            type: Array,
+            default: []
+        },
+        wishlist: {
+            type: Array,
+            default: []
         },
         history: {
             type: Array,
             default: []
-        }
+        },
+        role: {
+            type: Number,
+            default: 0
+        },
     },
     { timestamps: true }
 );
 
-// virtual field
+
 userSchema
     .virtual('password')
-    .set(function(password) {
+    .set(function (password) {
         this._password = password;
         this.salt = uuidv1();
         this.hashed_password = this.encryptPassword(password);
     })
-    .get(function() {
+    .get(function () {
         return this._password;
     });
 
 userSchema.methods = {
-    encryptPassword: function(password) {
+    encryptPassword: function (password) {
         if (!password) return '';
         try {
             return crypto
