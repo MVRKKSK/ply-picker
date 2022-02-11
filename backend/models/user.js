@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema(
         mobile_no: {
             type: Number,
             min: 10,
-            unique: true
+            unique: true,
+            default: null
         },
         hashed_password: {
             type: String,

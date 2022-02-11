@@ -1,10 +1,17 @@
 const express = require("express");
-const router = express.Router();
-const { signup , signin , signout , googlelogin } = require("../controllers/user")
+const { requireSignin , isAuth , isAdmin } = require("../controllers/auth");
+const { userById } = require("../controllers/user");
 
-router.post("/signup", signup)
-router.post("/signin", signin)
-router.get("/signout", signout)
-router.post("/googleLogin", googlelogin)
+
+const router = express.Router();
+
+router.get("/secret/:userId", requireSignin , isAuth , isAdmin , (req, res ) => {
+    res.json({
+        user:req.profile
+    })
+
+})
+
+router.param("userId", userById)
 
 module.exports = router;
